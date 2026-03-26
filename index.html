@@ -21,25 +21,54 @@
                 <div class="logo-subtitle">KITCHEN</div>
             </a>
             <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#menu">Menu</a>
-                <a href="#location">Location</a>
-                <a href="#reservations" class="btn-outline">Book a Table</a>
+                <a href="#about"    data-i18n="nav.about">About</a>
+                <a href="#menu"     data-i18n="nav.menu">Menu</a>
+                <a href="#location" data-i18n="nav.location">Location</a>
+                <a href="#reservations" class="btn-outline" data-i18n="nav.book">Book a Table</a>
+
+                <!-- Language Switcher -->
+                <div class="lang-switcher" id="langSwitcher">
+                    <button class="lang-btn" id="langBtn">
+                        <i class="ph ph-globe"></i>
+                        <span id="currentLangLabel">EN</span>
+                        <i class="ph ph-caret-down lang-caret"></i>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <button class="lang-option active" data-lang="en">🇬🇧 English</button>
+                        <button class="lang-option" data-lang="nl">🇧🇪 Nederlands</button>
+                        <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
+                    </div>
+                </div>
             </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="ph ph-list"></i>
-            </button>
+            <div class="nav-right-mobile">
+                <!-- Mobile Lang Switcher -->
+                <div class="lang-switcher" id="langSwitcherMobile">
+                    <button class="lang-btn" id="langBtnMobile">
+                        <i class="ph ph-globe"></i>
+                        <span id="currentLangLabelMobile">EN</span>
+                        <i class="ph ph-caret-down lang-caret"></i>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdownMobile">
+                        <button class="lang-option active" data-lang="en">🇬🇧 English</button>
+                        <button class="lang-option" data-lang="nl">🇧🇪 Nederlands</button>
+                        <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
+                    </div>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
         </div>
-        
+
         <!-- Mobile Menu Overlay -->
         <div class="mobile-menu" id="mobileMenu">
             <button class="close-menu-btn" id="closeMenuBtn">
                 <i class="ph ph-x"></i>
             </button>
-            <a href="#about" class="mobile-link">About</a>
-            <a href="#menu" class="mobile-link">Menu</a>
-            <a href="#location" class="mobile-link">Location</a>
-            <a href="#reservations" class="mobile-link">Reservations</a>
+            <a href="#about"        class="mobile-link" data-i18n="nav.about">About</a>
+            <a href="#menu"         class="mobile-link" data-i18n="nav.menu">Menu</a>
+            <a href="#location"     class="mobile-link" data-i18n="nav.location">Location</a>
+            <a href="#reservations" class="mobile-link" data-i18n="nav.reservations">Reservations</a>
         </div>
     </nav>
 
@@ -48,11 +77,14 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-text-wrapper fade-in-up">
-                <h1 class="hero-title">Fusion South East Asian<br>Restaurant</h1>
-                <p class="hero-subtitle">Now Open For<br><span class="highlight">Brunch • Lunch • Dinner</span></p>
+                <h1 class="hero-title" data-i18n="hero.title">Fusion South East Asian<br>Restaurant</h1>
+                <p class="hero-subtitle">
+                    <span data-i18n="hero.openFor">Now Open For</span><br>
+                    <span class="highlight" data-i18n="hero.meals">Brunch • Lunch • Dinner</span>
+                </p>
                 <div class="hero-cta">
-                    <a href="#reservations" class="btn-primary">Reserve Your Table</a>
-                    <a href="#menu" class="btn-secondary">View Menu</a>
+                    <a href="#reservations" class="btn-primary"   data-i18n="hero.cta1">Reserve Your Table</a>
+                    <a href="#menu"         class="btn-secondary" data-i18n="hero.cta2">View Menu</a>
                 </div>
             </div>
         </div>
@@ -62,15 +94,15 @@
     <section class="menu-section section-padding" id="menu">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Our Menu</h2>
+                <h2 data-i18n="menu.heading">Our Menu</h2>
                 <div class="divider"></div>
-                <p>A harmonious blend of authentic South East Asian flavors, elevated for the modern palate.</p>
+                <p data-i18n="menu.subheading">A harmonious blend of authentic South East Asian flavors, elevated for the modern palate.</p>
             </div>
-            
+
             <div class="menu-categories fade-in">
-                <button class="menu-tab active" data-target="starters">Starters</button>
-                <button class="menu-tab" data-target="mains">Mains</button>
-                <button class="menu-tab" data-target="desserts">Desserts</button>
+                <button class="menu-tab active" data-target="starters" data-i18n="menu.starters">Starters</button>
+                <button class="menu-tab"        data-target="mains"    data-i18n="menu.mains">Mains</button>
+                <button class="menu-tab"        data-target="desserts" data-i18n="menu.desserts">Desserts</button>
             </div>
 
             <div class="menu-content fade-in">
@@ -78,31 +110,31 @@
                 <div class="menu-grid" id="starters">
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Vietnamese Fresh Spring Rolls</h3>
+                            <h3 data-i18n="menu.s1.name">Vietnamese Fresh Spring Rolls</h3>
                             <span class="price">€12</span>
                         </div>
-                        <p class="menu-item-desc">Rice paper, fresh herbs, vermicelli, peanut dipping sauce. Choice of shrimp or tofu.</p>
+                        <p class="menu-item-desc" data-i18n="menu.s1.desc">Rice paper, fresh herbs, vermicelli, peanut dipping sauce. Choice of shrimp or tofu.</p>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Chicken Satay Skewers</h3>
+                            <h3 data-i18n="menu.s2.name">Chicken Satay Skewers</h3>
                             <span class="price">€14</span>
                         </div>
-                        <p class="menu-item-desc">Grilled marinated chicken with a rich, spiced peanut sauce and cucumber relish.</p>
+                        <p class="menu-item-desc" data-i18n="menu.s2.desc">Grilled marinated chicken with a rich, spiced peanut sauce and cucumber relish.</p>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Tom Yum Soup</h3>
+                            <h3 data-i18n="menu.s3.name">Tom Yum Soup</h3>
                             <span class="price">€15</span>
                         </div>
-                        <p class="menu-item-desc">Classic Thai hot and sour broth with lemongrass, galangal, kaffir lime leaves, and prawns.</p>
+                        <p class="menu-item-desc" data-i18n="menu.s3.desc">Classic Thai hot and sour broth with lemongrass, galangal, kaffir lime leaves, and prawns.</p>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Bao Buns</h3>
+                            <h3 data-i18n="menu.s4.name">Bao Buns</h3>
                             <span class="price">€16</span>
                         </div>
-                        <p class="menu-item-desc">Steamed fluffy buns filled with slow-cooked pork belly, hoisin, and pickled vegetables.</p>
+                        <p class="menu-item-desc" data-i18n="menu.s4.desc">Steamed fluffy buns filled with slow-cooked pork belly, hoisin, and pickled vegetables.</p>
                     </div>
                 </div>
 
@@ -110,31 +142,31 @@
                 <div class="menu-grid hidden" id="mains">
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Signature Pad Thai</h3>
+                            <h3 data-i18n="menu.m1.name">Signature Pad Thai</h3>
                             <span class="price">€22</span>
                         </div>
-                        <p class="menu-item-desc">Stir-fried rice noodles, egg, peanuts, bean sprouts, and tangy tamarind sauce.</p>
+                        <p class="menu-item-desc" data-i18n="menu.m1.desc">Stir-fried rice noodles, egg, peanuts, bean sprouts, and tangy tamarind sauce.</p>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Malaysian Beef Rendang</h3>
+                            <h3 data-i18n="menu.m2.name">Malaysian Beef Rendang</h3>
                             <span class="price">€26</span>
                         </div>
-                        <p class="menu-item-desc">Slow-cooked beef in a rich coconut milk and spice paste, served with jasmine rice.</p>
+                        <p class="menu-item-desc" data-i18n="menu.m2.desc">Slow-cooked beef in a rich coconut milk and spice paste, served with jasmine rice.</p>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Green Curry</h3>
+                            <h3 data-i18n="menu.m3.name">Green Curry</h3>
                             <span class="price">€24</span>
                         </div>
-                        <p class="menu-item-desc">Aromatic Thai green chili paste, coconut milk, bamboo shoots, and Thai basil. Choice of chicken or tofu.</p>
+                        <p class="menu-item-desc" data-i18n="menu.m3.desc">Aromatic Thai green chili paste, coconut milk, bamboo shoots, and Thai basil. Choice of chicken or tofu.</p>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Nasi Goreng Kampung</h3>
+                            <h3 data-i18n="menu.m4.name">Nasi Goreng Kampung</h3>
                             <span class="price">€20</span>
                         </div>
-                        <p class="menu-item-desc">Indonesian fried rice topped with a sunny-side-up egg, accompanied by chicken satay and shrimp crackers.</p>
+                        <p class="menu-item-desc" data-i18n="menu.m4.desc">Indonesian fried rice topped with a sunny-side-up egg, accompanied by chicken satay and shrimp crackers.</p>
                     </div>
                 </div>
 
@@ -142,17 +174,17 @@
                 <div class="menu-grid hidden" id="desserts">
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Mango Sticky Rice</h3>
+                            <h3 data-i18n="menu.d1.name">Mango Sticky Rice</h3>
                             <span class="price">€10</span>
                         </div>
-                        <p class="menu-item-desc">Sweet coconut glutinous rice, fresh ripe mango, and toasted mung beans.</p>
+                        <p class="menu-item-desc" data-i18n="menu.d1.desc">Sweet coconut glutinous rice, fresh ripe mango, and toasted mung beans.</p>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-header">
-                            <h3>Pandan Panna Cotta</h3>
+                            <h3 data-i18n="menu.d2.name">Pandan Panna Cotta</h3>
                             <span class="price">€12</span>
                         </div>
-                        <p class="menu-item-desc">Silky pandan-infused cream topped with a lightly spiced palm sugar syrup.</p>
+                        <p class="menu-item-desc" data-i18n="menu.d2.desc">Silky pandan-infused cream topped with a lightly spiced palm sugar syrup.</p>
                     </div>
                 </div>
             </div>
@@ -163,60 +195,56 @@
     <section class="reservations-section section-padding" id="reservations">
         <div class="container container-split">
             <div class="reservation-info fade-in-left">
-                <h2>Book Your Table</h2>
+                <h2 data-i18n="res.heading">Book Your Table</h2>
                 <div class="divider left-align"></div>
-                <p>Join us for an unforgettable dining experience. Reserve your table online or give us a call.</p>
-                
+                <p data-i18n="res.subheading">Join us for an unforgettable dining experience. Reserve your table online or give us a call.</p>
+
                 <div class="contact-methods">
                     <div class="contact-item">
-                        <div class="icon-circle">
-                            <i class="ph ph-phone"></i>
-                        </div>
+                        <div class="icon-circle"><i class="ph ph-phone"></i></div>
                         <div>
-                            <h4>Call Us</h4>
+                            <h4 data-i18n="res.callUs">Call Us</h4>
                             <p><a href="tel:+3221234567">+32 2 123 45 67</a></p>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <div class="icon-circle">
-                            <i class="ph ph-clock"></i>
-                        </div>
+                        <div class="icon-circle"><i class="ph ph-clock"></i></div>
                         <div>
-                            <h4>Opening Hours</h4>
-                            <p>Brunch & Lunch: 11:00 - 15:00<br>Dinner: 18:00 - 23:00<br>Closed on Mondays</p>
+                            <h4 data-i18n="res.hours">Opening Hours</h4>
+                            <p data-i18n="res.hoursDetail">Brunch &amp; Lunch: 11:00 - 15:00<br>Dinner: 18:00 - 23:00<br>Closed on Mondays</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="reservation-form-wrapper fade-in-right">
                 <form id="reservationForm" class="reservation-form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" required placeholder="John Doe">
+                            <label for="name" data-i18n="form.name">Name</label>
+                            <input type="text" id="name" required placeholder="John Doe" data-i18n-placeholder="form.namePh">
                         </div>
                         <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" required placeholder="+32 ...">
+                            <label for="phone" data-i18n="form.phone">Phone Number</label>
+                            <input type="tel" id="phone" required placeholder="+32 ..." data-i18n-placeholder="form.phonePh">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="date">Date</label>
+                            <label for="date" data-i18n="form.date">Date</label>
                             <input type="date" id="date" required>
                         </div>
                         <div class="form-group">
-                            <label for="time">Time</label>
+                            <label for="time" data-i18n="form.time">Time</label>
                             <select id="time" required>
-                                <option value="" disabled selected>Select Time</option>
-                                <optgroup label="Brunch & Lunch">
+                                <option value="" disabled selected data-i18n="form.selectTime">Select Time</option>
+                                <optgroup label="Brunch &amp; Lunch" data-i18n-label="form.groupBrunch">
                                     <option value="11:00">11:00</option>
                                     <option value="12:00">12:00</option>
                                     <option value="13:00">13:00</option>
                                     <option value="14:00">14:00</option>
                                 </optgroup>
-                                <optgroup label="Dinner">
+                                <optgroup label="Dinner" data-i18n-label="form.groupDinner">
                                     <option value="18:00">18:00</option>
                                     <option value="19:00">19:00</option>
                                     <option value="20:00">20:00</option>
@@ -227,22 +255,22 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="guests">Number of Guests</label>
+                        <label for="guests" data-i18n="form.guests">Number of Guests</label>
                         <select id="guests" required>
-                            <option value="1">1 Person</option>
-                            <option value="2" selected>2 People</option>
-                            <option value="3">3 People</option>
-                            <option value="4">4 People</option>
-                            <option value="5">5 People</option>
-                            <option value="6">6 People</option>
-                            <option value="larger">Larger Group (Please call)</option>
+                            <option value="1"      data-i18n="form.p1">1 Person</option>
+                            <option value="2" selected data-i18n="form.p2">2 People</option>
+                            <option value="3"      data-i18n="form.p3">3 People</option>
+                            <option value="4"      data-i18n="form.p4">4 People</option>
+                            <option value="5"      data-i18n="form.p5">5 People</option>
+                            <option value="6"      data-i18n="form.p6">6 People</option>
+                            <option value="larger" data-i18n="form.pLarger">Larger Group (Please call)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="requests">Special Requests</label>
-                        <textarea id="requests" rows="3" placeholder="Dietary requirements, celebrations..."></textarea>
+                        <label for="requests" data-i18n="form.special">Special Requests</label>
+                        <textarea id="requests" rows="3" placeholder="Dietary requirements, celebrations..." data-i18n-placeholder="form.specialPh"></textarea>
                     </div>
-                    <button type="submit" class="btn-primary full-width">Confirm Reservation</button>
+                    <button type="submit" class="btn-primary full-width" data-i18n="form.submit">Confirm Reservation</button>
                     <div id="formMessage" class="form-message"></div>
                 </form>
             </div>
@@ -253,25 +281,26 @@
     <section class="location-section section-padding" id="location">
         <div class="container fade-in">
             <div class="section-header">
-                <h2>Find Us</h2>
+                <h2 data-i18n="loc.heading">Find Us</h2>
                 <div class="divider"></div>
-                <p>Located in the heart of Brussels.</p>
+                <p data-i18n="loc.subheading">Located in the heart of Brussels.</p>
             </div>
-            
+
             <div class="map-container">
                 <div class="map-overlay">
                     <div class="location-card">
                         <i class="ph ph-map-pin"></i>
                         <h3>Heritage Kitchen</h3>
                         <p>Koloniënstraat 6<br>1000 Brussels, Belgium</p>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Koloniënstraat+6,+Brussels,+Belgium+1000" target="_blank" rel="noopener noreferrer" class="btn-primary location-btn">
-                            Get Directions <i class="ph ph-arrow-up-right"></i>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Koloniënstraat+6,+Brussels,+Belgium+1000"
+                           target="_blank" rel="noopener noreferrer" class="btn-primary location-btn">
+                            <span data-i18n="loc.directions">Get Directions</span> <i class="ph ph-arrow-up-right"></i>
                         </a>
                     </div>
                 </div>
-                <!-- Adding an aesthetic embedded map style or placeholder image. We will use a visual placeholder with the trigger overlay. -->
                 <div class="map-visual">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.068134563853!2d4.3598!3d50.8447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c4803afbd13b%3A0x6b4fb6c167f57cd0!2sRue%20des%20Colonies%206%2C%201000%20Bruxelles%2C%20Belgium!5e0!3m2!1sen!2sus!4v1711468200000!5m2!1sen!2sus" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.068134563853!2d4.3598!3d50.8447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c4803afbd13b%3A0x6b4fb6c167f57cd0!2sRue%20des%20Colonies%206%2C%201000%20Bruxelles%2C%20Belgium!5e0!3m2!1sen!2sus!4v1711468200000!5m2!1sen!2sus"
+                        width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>
@@ -286,34 +315,34 @@
                         <div class="logo-title">Heritage</div>
                         <div class="logo-subtitle">KITCHEN</div>
                     </a>
-                    <p class="footer-desc">A culinary journey through South East Asia, served with elegance in Brussels.</p>
+                    <p class="footer-desc" data-i18n="footer.desc">A culinary journey through South East Asia, served with elegance in Brussels.</p>
                     <div class="social-links">
                         <a href="#"><i class="ph ph-instagram-logo"></i></a>
                         <a href="#"><i class="ph ph-facebook-logo"></i></a>
                         <a href="#"><i class="ph ph-twitter-logo"></i></a>
                     </div>
                 </div>
-                
+
                 <div class="footer-links">
-                    <h4>Quick Links</h4>
+                    <h4 data-i18n="footer.quickLinks">Quick Links</h4>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#menu">Menu</a></li>
-                        <li><a href="#reservations">Reservations</a></li>
-                        <li><a href="#location">Location</a></li>
+                        <li><a href="#home"        data-i18n="footer.home">Home</a></li>
+                        <li><a href="#menu"        data-i18n="nav.menu">Menu</a></li>
+                        <li><a href="#reservations" data-i18n="nav.reservations">Reservations</a></li>
+                        <li><a href="#location"    data-i18n="nav.location">Location</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-contact">
-                    <h4>Contact Us</h4>
+                    <h4 data-i18n="footer.contactUs">Contact Us</h4>
                     <p><i class="ph ph-map-pin"></i> Koloniënstraat 6, 1000 Brussels</p>
                     <p><i class="ph ph-phone"></i> +32 2 123 45 67</p>
                     <p><i class="ph ph-envelope"></i> info@heritagekitchen.be</p>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
-                <p>&copy; <span id="currentYear"></span> Heritage Kitchen. All Rights Reserved.</p>
+                <p>&copy; <span id="currentYear"></span> Heritage Kitchen. <span data-i18n="footer.rights">All Rights Reserved.</span></p>
             </div>
         </div>
     </footer>
