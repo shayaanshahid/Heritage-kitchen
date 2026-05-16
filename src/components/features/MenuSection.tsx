@@ -98,9 +98,9 @@ const MenuSection = () => {
           ) : (
             <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
               <AnimatePresence mode="popLayout">
-                {filteredItems.map((item) => (
+                {filteredItems.map((item, index) => (
                   <motion.div
-                    key={item._id || item.id}
+                    key={item._id || item.id || index}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 12 }}

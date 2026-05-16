@@ -159,7 +159,7 @@ export default function DashboardOverview() {
               .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
               .slice(0, 5)
               .map((item, i) => (
-                <div key={item._id} className="flex items-center justify-between p-4 bg-[#f5ede0]/30 hover:bg-[#f5ede0]/60 transition-all rounded-xl border border-transparent hover:border-[#6b7c4a]/10">
+                <div key={item._id || i} className="flex items-center justify-between p-4 bg-[#f5ede0]/30 hover:bg-[#f5ede0]/60 transition-all rounded-xl border border-transparent hover:border-[#6b7c4a]/10">
                   <div className="flex items-center space-x-4">
                     <div className={cn(
                       "w-10 h-10 rounded-xl flex items-center justify-center font-bold",

@@ -207,9 +207,9 @@ export default function MenuManagementPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <AnimatePresence mode="popLayout">
-                {filteredItems.map((item) => (
+                {filteredItems.map((item, index) => (
                   <motion.div
-                    key={item._id}
+                    key={item._id || index}
                     layout
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}

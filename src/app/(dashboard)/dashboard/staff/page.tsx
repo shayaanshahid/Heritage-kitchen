@@ -234,7 +234,7 @@ export default function StaffPage() {
                   No staff members found.
                 </div>
               )
-            : filtered.map((member) => {
+            : filtered.map((member, index) => {
                 const RoleIcon = roleIcons[member.role];
                 const initials = member.name
                   .split(' ')
@@ -244,7 +244,7 @@ export default function StaffPage() {
                   .slice(0, 2);
                 return (
                   <motion.div
-                    key={member._id}
+                    key={member._id || index}
                     layout
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}

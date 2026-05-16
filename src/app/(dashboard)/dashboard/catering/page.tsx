@@ -160,9 +160,9 @@ export default function CateringManagementPage() {
                     </td>
                   </tr>
                 ) : (
-                  filtered.map((item) => (
+                  filtered.map((item, index) => (
                     <motion.tr 
-                      key={item._id}
+                      key={item._id || index}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}

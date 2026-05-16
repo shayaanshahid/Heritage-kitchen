@@ -173,9 +173,9 @@ export default function ReservationsPage() {
                     </td>
                   </tr>
                 ) : (
-                  filteredReservations.map((res) => (
+                  filteredReservations.map((res, index) => (
                     <motion.tr 
-                      key={res._id}
+                      key={res._id || index}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
