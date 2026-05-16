@@ -2,99 +2,126 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Lock, Mail, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
       if (res.ok) {
-        const data = await res.json();
-        if (data.user.role === 'ADMIN' || data.user.role === 'EMPLOYEE') {
-          router.push('/dashboard');
-        } else {
-          router.push('/');
-        }
+        router.push('/dashboard');
       } else {
-        setError('Invalid email or password');
+        const data = await res.json();
+        setError(data.error || 'Invalid credentials.');
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+    } catch {
+      setError('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const inputCls =
+    'w-full px-4 py-3 rounded-lg text-sm border outline-none transition-all font-sans'
+    + ' bg-white text-[#1e2215] placeholder:text-[#7a8060]'
+    + ' border-[rgba(107,124,74,0.25)] focus:border-[#6b7c4a]'
+    + ' focus:shadow-[0_0_0_3px_rgba(107,124,74,0.12)]';
+
   return (
-    <div className="min-h-screen bg-secondary flex items-center justify-center px-6">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="max-w-md w-full bg-[#121212] p-10 shadow-2xl border border-white/5"
-      >
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{ background: '#f5ede0' }}
+    >
+      <div className="w-full max-w-md">
+        {/* Logo */}
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-serif text-primary mb-2">Heritage Kitchen</h1>
-          <p className="text-muted-foreground text-sm uppercase tracking-widest">Management Portal</p>
+          <div className="flex flex-col items-center leading-none mb-6">
+            <span className="font-serif font-bold text-4xl" style={{ color: '#4a5e32' }}>Heritage</span>
+            <span className="text-[9px] tracking-[5px] uppercase mt-0.5" style={{ color: '#6b7c4a' }}>Kitchen</span>
+          </div>
+          <p className="text-sm" style={{ color: '#7a8060' }}>Staff portal — sign in to continue</p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <Mail className="w-3 h-3" /> Email Address
-            </label>
-            <input 
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full bg-muted border border-white/10 px-4 py-3 rounded-sm focus:outline-none focus:border-primary transition-colors"
-              placeholder="admin@heritagekitchen.be"
-            />
-          </div>
+        {/* Card */}
+        <div
+          className="rounded-2xl p-8"
+          style={{
+            background: '#ffffff',
+            border: '1px solid rgba(107,124,74,0.15)',
+            boxShadow: '0 8px 40px rgba(74,94,50,0.12)',
+          }}
+        >
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-medium uppercase tracking-widest" style={{ color: '#4a5e32' }}>
+                Email Address
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@heritagekitchen.be"
+                className={inputCls}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <Lock className="w-3 h-3" /> Password
-            </label>
-            <input 
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full bg-muted border border-white/10 px-4 py-3 rounded-sm focus:outline-none focus:border-primary transition-colors"
-              placeholder="••••••••"
-            />
-          </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-medium uppercase tracking-widest" style={{ color: '#4a5e32' }}>
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className={inputCls}
+              />
+            </div>
 
-          {error && (
-            <p className="text-red-500 text-xs font-medium text-center">{error}</p>
-          )}
+            {error && (
+              <div
+                className="p-3 rounded-lg text-sm text-center"
+                style={{ background: 'rgba(180,70,70,0.08)', color: '#c05050', border: '1px solid rgba(180,70,70,0.2)' }}
+              >
+                {error}
+              </div>
+            )}
 
-          <button 
-            type="submit"
-            disabled={loading}
-            className="w-full bg-primary text-white py-4 font-bold tracking-widest uppercase hover:bg-primary/90 transition-all rounded-sm flex items-center justify-center"
-          >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Login"}
-          </button>
-        </form>
-      </motion.div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 rounded-xl font-medium text-sm tracking-wide transition-all hover:-translate-y-0.5 disabled:opacity-60 mt-2"
+              style={{
+                background: 'linear-gradient(135deg, #6b7c4a, #4a5e32)',
+                color: '#e8d9b5',
+                boxShadow: '0 2px 16px rgba(74,94,50,0.25)',
+              }}
+            >
+              {loading ? 'Signing in...' : 'Sign In'}
+            </button>
+          </form>
+        </div>
+
+        <p className="text-center text-xs mt-6" style={{ color: '#7a8060' }}>
+          <a href="/" className="transition-colors hover:underline" style={{ color: '#6b7c4a' }}>
+            ← Back to Heritage Kitchen
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

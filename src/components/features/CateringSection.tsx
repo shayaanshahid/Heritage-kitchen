@@ -1,73 +1,69 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Utensils, Star, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { UtensilsCrossed } from 'lucide-react';
+
+const events = [
+  { title: 'Weddings', desc: 'A memorable feast for your most important day, tailored to your vision.', emoji: '💍' },
+  { title: 'Corporate', desc: 'Impress clients and teams with premium South East Asian cuisine.', emoji: '🏢' },
+  { title: 'Private Dinners', desc: "Exclusive chef's table experiences for intimate groups.", emoji: '🕯️' },
+];
 
 const CateringSection = () => {
   return (
-    <section id="catering" className="section-padding bg-secondary relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-      
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="aspect-[4/5] bg-muted rounded-sm overflow-hidden shadow-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=1200" 
-                alt="Catering Service" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* Float badge */}
-            <div className="absolute -bottom-6 -right-6 bg-primary p-8 shadow-2xl hidden md:block">
-              <span className="text-4xl font-serif text-white block">15+</span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/80">Years of Excellence</span>
-            </div>
-          </motion.div>
+    <section id="catering" className="section-padding" style={{ background: '#f5ede0' }}>
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          className="text-center mb-14"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="font-serif text-4xl md:text-5xl mb-3" style={{ color: '#4a5e32' }}>
+            Catering & Events
+          </h2>
+          <div className="divider" />
+          <p className="mt-4 max-w-xl mx-auto" style={{ color: '#7a8060', fontSize: '1.05rem' }}>
+            Let us bring Heritage Kitchen to your special occasion — from intimate dinners to large corporate events.
+          </p>
+        </motion.div>
 
-          <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+          {events.map((item, i) => (
             <motion.div
+              key={item.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="rounded-xl p-8 text-center transition-all hover:-translate-y-1"
+              style={{
+                background: '#ffffff',
+                border: '1px solid rgba(107,124,74,0.12)',
+                boxShadow: '0 2px 16px rgba(74,94,50,0.06)',
+              }}
             >
-              <h4 className="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-4">Elevate Your Events</h4>
-              <h2 className="text-4xl md:text-5xl font-serif mb-6 leading-tight">Bespoke Catering <br />& Private Events</h2>
-              <div className="divider" />
-              <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-                From intimate dinner parties to large-scale corporate galas, Heritage Kitchen brings the art of Fusion South East Asian cuisine to your venue. Our culinary team crafts unique menus tailored to your specific needs.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-                <div className="flex items-center space-x-3">
-                  <Utensils className="text-primary w-5 h-5" />
-                  <span className="text-sm font-medium">Customized Menus</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Star className="text-primary w-5 h-5" />
-                  <span className="text-sm font-medium">Professional Staff</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Heart className="text-primary w-5 h-5" />
-                  <span className="text-sm font-medium">Attention to Detail</span>
-                </div>
-              </div>
-
-              <Link 
-                href="/catering-inquiry" 
-                className="inline-block bg-primary text-white px-12 py-4 font-bold tracking-widest uppercase hover:bg-primary/90 transition-all rounded-sm"
-              >
-                Inquire Now
-              </Link>
+              <div className="text-4xl mb-4">{item.emoji}</div>
+              <h3 className="font-serif text-xl mb-3" style={{ color: '#4a5e32' }}>{item.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: '#7a8060' }}>{item.desc}</p>
             </motion.div>
-          </div>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <Link
+            href="/catering-inquiry"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-xl font-medium text-sm tracking-wide transition-all hover:-translate-y-0.5"
+            style={{
+              background: 'linear-gradient(135deg, #6b7c4a, #4a5e32)',
+              color: '#e8d9b5',
+              boxShadow: '0 2px 16px rgba(74,94,50,0.25)',
+            }}
+          >
+            <UtensilsCrossed size={16} />
+            Submit a Catering Inquiry
+          </Link>
         </div>
       </div>
     </section>

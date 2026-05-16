@@ -2,84 +2,96 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, Globe, Share2, Camera } from 'lucide-react';
+import { MapPin, Phone, Mail } from 'lucide-react';
 
 const Footer = () => {
   const [year, setYear] = useState<number | null>(null);
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
+  useEffect(() => setYear(new Date().getFullYear()), []);
 
   return (
-    <footer className="bg-secondary border-t border-white/5 pt-20 pb-10 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          <div className="space-y-6">
-            <Link href="/" className="flex flex-col items-start group">
-              <span className="text-3xl font-serif font-bold text-primary">Heritage</span>
-              <span className="text-[10px] tracking-[0.3em] font-sans uppercase -mt-1 opacity-80">Kitchen</span>
+    <footer style={{ background: '#1e2215', color: '#e8d9b5' }} className="pt-16 pb-8 px-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+
+          {/* Brand */}
+          <div className="space-y-5">
+            <Link href="/" className="flex flex-col leading-none">
+              <span className="font-serif font-bold text-2xl" style={{ color: '#e8d9b5' }}>Heritage</span>
+              <span className="text-[9px] tracking-[4px] uppercase -mt-0.5" style={{ color: '#c8b99a' }}>Kitchen</span>
             </Link>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              A culinary journey through South East Asia, served with elegance in Brussels. Join us for a unique dining experience.
+            <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'rgba(232,217,181,0.65)' }}>
+              A culinary journey through South East Asia, served with elegance in Brussels.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary transition-colors">
-                <Globe className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary transition-colors">
-                <Share2 className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary transition-colors">
-                <Camera className="w-5 h-5" />
-              </a>
+            <div className="flex gap-3">
+              {['Globe', 'Share', 'Camera'].map((icon) => (
+                <a
+                  key={icon}
+                  href="#"
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-colors text-xs"
+                  style={{
+                    background: 'rgba(232,217,181,0.08)',
+                    border: '1px solid rgba(232,217,181,0.15)',
+                    color: '#c8b99a',
+                  }}
+                >
+                  ●
+                </a>
+              ))}
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <h4 className="font-serif text-xl mb-6">Quick Links</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li><Link href="#home" className="hover:text-primary transition-colors">Home</Link></li>
-              <li><Link href="#menu" className="hover:text-primary transition-colors">Menu</Link></li>
-              <li><Link href="#reservations" className="hover:text-primary transition-colors">Reservations</Link></li>
-              <li><Link href="#catering" className="hover:text-primary transition-colors">Catering</Link></li>
+            <h4 className="font-serif text-lg mb-5" style={{ color: '#e8d9b5' }}>Quick Links</h4>
+            <ul className="space-y-3">
+              {[
+                { label: 'Home', href: '#home' },
+                { label: 'Menu', href: '#menu' },
+                { label: 'Reservations', href: '#reservations' },
+                { label: 'Catering', href: '#catering' },
+                { label: 'Location', href: '#location' },
+              ].map(({ label, href }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    className="text-sm transition-colors"
+                    style={{ color: 'rgba(232,217,181,0.65)' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#e8d9b5')}
+                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(232,217,181,0.65)')}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
-            <h4 className="font-serif text-xl mb-6">Contact Us</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li className="flex items-start space-x-3">
-                <MapPin className="w-5 h-5 text-primary shrink-0" />
+            <h4 className="font-serif text-lg mb-5" style={{ color: '#e8d9b5' }}>Contact Us</h4>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-3 text-sm" style={{ color: 'rgba(232,217,181,0.65)' }}>
+                <MapPin size={15} className="mt-0.5 shrink-0" style={{ color: '#8a9c6a' }} />
                 <span>Koloniënstraat 6, 1000 Brussels, Belgium</span>
               </li>
-              <li className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-primary shrink-0" />
+              <li className="flex items-center gap-3 text-sm" style={{ color: 'rgba(232,217,181,0.65)' }}>
+                <Phone size={15} className="shrink-0" style={{ color: '#8a9c6a' }} />
                 <span>+32 2 123 45 67</span>
               </li>
-              <li className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-primary shrink-0" />
+              <li className="flex items-center gap-3 text-sm" style={{ color: 'rgba(232,217,181,0.65)' }}>
+                <Mail size={15} className="shrink-0" style={{ color: '#8a9c6a' }} />
                 <span>info@heritagekitchen.be</span>
               </li>
             </ul>
           </div>
-
-          <div>
-            <h4 className="font-serif text-xl mb-6">Newsletter</h4>
-            <p className="text-sm text-muted-foreground mb-4">Subscribe for seasonal updates and events.</p>
-            <div className="flex">
-              <input 
-                type="email" 
-                placeholder="Your email" 
-                className="bg-muted border border-white/10 px-4 py-2 text-sm w-full focus:outline-none focus:border-primary"
-              />
-              <button className="bg-primary text-white px-4 py-2 text-xs font-bold uppercase tracking-widest">Join</button>
-            </div>
-          </div>
         </div>
 
-        <div className="border-t border-white/5 pt-8 text-center text-xs text-muted-foreground">
-          <p>© {year || 2024} Heritage Kitchen. All Rights Reserved.</p>
+        {/* Bottom bar */}
+        <div
+          className="pt-6 text-center text-xs"
+          style={{ borderTop: '1px solid rgba(232,217,181,0.1)', color: 'rgba(232,217,181,0.4)' }}
+        >
+          © {year || 2024} Heritage Kitchen. All Rights Reserved.
         </div>
       </div>
     </footer>

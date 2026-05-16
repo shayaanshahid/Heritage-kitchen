@@ -1,51 +1,115 @@
 @import "tailwindcss";
 
+/* =========================================
+   Heritage Kitchen — Design System
+   Theme: Olive Green + Cream (Light)
+   Sourced from legacy/styles.css
+   ========================================= */
+
 @theme {
-  --color-primary: #C5A059;
-  --color-primary-foreground: #FFFFFF;
-  --color-secondary: #1A1A1A;
-  --color-secondary-foreground: #F9F6F0;
-  --color-accent: #F9F6F0;
-  --color-accent-foreground: #1A1A1A;
-  --color-muted: #2A2A2A;
-  --color-muted-foreground: #A1A1AA;
-  
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-inter);
+  /* Colors — Legacy Palette */
+  --color-green-dark:    #4a5e32;
+  --color-green-mid:     #6b7c4a;
+  --color-green-light:   #8a9c6a;
+  --color-cream:         #e8d9b5;
+  --color-cream-light:   #f5ede0;
+  --color-cream-dark:    #c8b99a;
+  --color-text-dark:     #1e2215;
+  --color-text-mid:      #4a5035;
+  --color-text-light:    #7a8060;
+
+  /* Semantic aliases for Tailwind usage */
+  --color-primary:        #6b7c4a;
+  --color-primary-dark:   #4a5e32;
+  --color-secondary:      #f5ede0;
+  --color-background:     #f5ede0;
+  --color-surface:        #ffffff;
+  --color-foreground:     #1e2215;
+  --color-muted:          #e8d9b5;
+  --color-muted-foreground: #7a8060;
+  --color-border:         rgba(107, 124, 74, 0.15);
+  --color-accent:         #e8d9b5;
+
+  /* Fonts */
+  --font-sans:   'Inter', sans-serif;
+  --font-serif:  'Playfair Display', serif;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 16px rgba(74, 94, 50, 0.10);
+  --shadow-md: 0 8px 40px rgba(74, 94, 50, 0.18);
+  --shadow-lg: 0 20px 60px rgba(74, 94, 50, 0.22);
+
+  /* Border radius */
+  --radius:   12px;
 }
 
-:root {
-  --background: #1A1A1A;
-  --foreground: #F9F6F0;
-  --primary: #C5A059;
-  --secondary: #1A1A1A;
-  --accent: #F9F6F0;
+/* =================== BASE =================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), sans-serif;
-  @apply antialiased;
+  background-color: #f5ede0;
+  color: #1e2215;
+  line-height: 1.7;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-playfair), serif;
+/* =================== TYPOGRAPHY =================== */
+h1, h2, h3, h4, h5 {
+  font-family: 'Playfair Display', serif;
+  color: #4a5e32;
+  line-height: 1.2;
+}
+
+/* =================== UTILITIES =================== */
+.section-padding {
+  padding: 96px 24px;
 }
 
 .divider {
-  @apply h-px w-24 bg-primary my-6;
+  width: 56px;
+  height: 3px;
+  background: linear-gradient(90deg, #6b7c4a, #c8b99a);
+  border-radius: 2px;
+  margin: 16px auto;
 }
 
-.section-padding {
-  @apply py-20 px-6 md:px-12 lg:px-24;
+.divider.left {
+  margin: 16px 0;
 }
 
+/* =================== SCROLLBAR =================== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f5ede0; }
+::-webkit-scrollbar-thumb { background: #c8b99a; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #6b7c4a; }
+
+/* =================== ANIMATIONS =================== */
 @keyframes slow-zoom {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.1); }
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
 }
 
 .animate-slow-zoom {
-  animation: slow-zoom 20s ease-in-out infinite alternate;
+  animation: slow-zoom 12s ease-in-out infinite alternate;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fade-up 0.7s ease forwards; }
+
+/* =================== DASHBOARD OVERRIDES =================== */
+/* The CRM dashboard keeps its dark aesthetic */
+.dashboard-dark {
+  background-color: #0F0F0F;
+  color: #f5ede0;
 }
