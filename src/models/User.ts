@@ -9,6 +9,8 @@ const UserSchema = new Schema({
     enum: ['ADMIN', 'EMPLOYEE', 'CUSTOMER'], 
     default: 'CUSTOMER' 
   },
+  phone: { type: String, default: '' },
+  position: { type: String, default: '' },
 }, { timestamps: true });
 
 const User = models.User || model('User', UserSchema);
