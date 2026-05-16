@@ -10,7 +10,9 @@ import {
   Eye, 
   EyeOff,
   Image as ImageIcon,
-  Loader2
+  Loader2,
+  X,
+  ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -24,18 +26,32 @@ type MenuItem = {
   isFeatured: boolean;
 };
 
+const categories = ['ALL', 'STARTERS', 'MAINS', 'DESSERTS', 'BRUNCH', 'DRINKS'];
+
 export default function MenuManagementPage() {
   const [items, setItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('ALL');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [form, setForm] = useState({
+    name: '',
+    description: '',
+    price: '',
+    category: 'STARTERS',
+    isAvailable: true,
+    isFeatured: false
+  });
 
   const fetchMenu = async () => {
     setLoading(true);
     try {
       const res = await fetch('/api/menu');
       const data = await res.json();
-      setItems(data);
+      setItems(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch menu:', error);
     } finally {
@@ -47,7 +63,72 @@ export default function MenuManagementPage() {
     fetchMenu();
   }, []);
 
-  const categories = ['ALL', 'STARTERS', 'MAINS', 'DESSERTS', 'BRUNCH', 'DRINKS'];
+  const openModal = (item?: MenuItem) => {
+    if (item) {
+      setEditingItem(item);
+      setForm({
+        name: item.name,
+        description: item.description,
+        price: item.price.toString(),
+        category: item.category,
+        isAvailable: item.isAvailable,
+        isFeatured: item.isFeatured
+      });
+    } else {
+      setEditingItem(null);
+      setForm({
+        name: '',
+        description: '',
+        price: '',
+        category: 'STARTERS',
+        isAvailable: true,
+        isFeatured: false
+      });
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingItem(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const method = editingItem ? 'PATCH' : 'POST';
+      const url = editingItem ? `/api/menu/${editingItem._id}` : '/api/menu';
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          price: parseFloat(form.price)
+        }),
+      });
+
+      if (res.ok) {
+        await fetchMenu();
+        closeModal();
+      }
+    } catch (error) {
+      console.error('Failed to save item:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const deleteItem = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+    try {
+      const res = await fetch(`/api/menu/${id}`, { method: 'DELETE' });
+      if (res.ok) fetchMenu();
+    } catch (error) {
+      console.error('Failed to delete item:', error);
+    }
+  };
 
   const filteredItems = items.filter(item => {
     const matchesCategory = activeCategory === 'ALL' || item.category === activeCategory;
@@ -59,28 +140,33 @@ export default function MenuManagementPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-serif">Menu Management</h1>
-          <p className="text-muted-foreground text-sm">Add, edit, or remove dishes from your menu.</p>
+          <h1 className="text-3xl font-serif text-[#4a5e32]">Menu Management</h1>
+          <p className="text-[#7a8060] text-sm mt-1">Add, edit, or remove dishes from your menu.</p>
         </div>
 
-        <button className="bg-primary text-white px-6 py-3 font-bold tracking-widest uppercase rounded-sm flex items-center gap-2 hover:bg-primary/90 transition-all shadow-xl">
+        <button 
+          onClick={() => openModal()}
+          className="bg-[#6b7c4a] text-white px-6 py-3 font-bold tracking-widest uppercase rounded-xl flex items-center gap-2 hover:bg-[#4a5e32] transition-all shadow-lg shadow-[#6b7c4a]/20"
+        >
           <Plus size={18} /> Add New Dish
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Filters */}
-        <div className="w-full md:w-64 space-y-6">
-          <div className="bg-secondary p-6 border border-white/5 shadow-xl space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Categories</h4>
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Sidebar Filters */}
+        <div className="w-full lg:w-64 space-y-6">
+          <div className="bg-white p-6 rounded-2xl border border-[#6b7c4a]/10 shadow-sm space-y-4">
+            <h4 className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Categories</h4>
             <div className="flex flex-col space-y-1">
               {categories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={cn(
-                    "text-left px-4 py-2 rounded-sm text-sm transition-all",
-                    activeCategory === cat ? "bg-primary text-white" : "hover:bg-muted text-muted-foreground"
+                    "text-left px-4 py-2.5 rounded-xl text-sm transition-all duration-200",
+                    activeCategory === cat 
+                      ? "bg-[#6b7c4a] text-white font-semibold" 
+                      : "text-[#7a8060] hover:bg-[#f5ede0] hover:text-[#4a5e32]"
                   )}
                 >
                   {cat}
@@ -90,13 +176,13 @@ export default function MenuManagementPage() {
           </div>
 
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a8060] w-4 h-4" />
             <input 
               type="text" 
               placeholder="Search dishes..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-secondary border border-white/5 rounded-sm text-sm focus:outline-none focus:border-primary transition-colors"
+              className="w-full pl-10 pr-4 py-3 bg-white border border-[#6b7c4a]/10 rounded-xl text-sm focus:outline-none focus:border-[#6b7c4a] transition-all shadow-sm"
             />
           </div>
         </div>
@@ -104,13 +190,17 @@ export default function MenuManagementPage() {
         {/* Menu Items Grid */}
         <div className="flex-1">
           {loading ? (
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[1,2,3,4].map(i => (
-                <div key={i} className="animate-pulse bg-secondary h-40 border border-white/5 rounded-sm" />
+                <div key={i} className="animate-pulse bg-white h-44 rounded-2xl border border-[#6b7c4a]/10" />
               ))}
             </div>
+          ) : filteredItems.length === 0 ? (
+            <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#6b7c4a]/20">
+              <p className="text-[#7a8060] italic">No dishes found in this category.</p>
+            </div>
           ) : (
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <AnimatePresence mode="popLayout">
                 {filteredItems.map((item) => (
                   <motion.div
@@ -119,37 +209,49 @@ export default function MenuManagementPage() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-secondary p-6 border border-white/5 shadow-xl flex gap-6 group hover:border-primary/30 transition-all"
+                    className="bg-white p-6 rounded-2xl border border-[#6b7c4a]/10 shadow-sm flex gap-5 group hover:border-[#6b7c4a]/30 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="w-24 h-24 bg-muted rounded-sm flex items-center justify-center shrink-0 overflow-hidden relative">
-                      <ImageIcon className="text-muted-foreground/30 w-8 h-8" />
+                    <div className="w-24 h-24 bg-[#f5ede0]/50 rounded-xl flex items-center justify-center shrink-0 overflow-hidden relative border border-[#6b7c4a]/5">
+                      <ImageIcon className="text-[#6b7c4a]/20 w-8 h-8" />
                       {item.isFeatured && (
-                        <div className="absolute top-0 left-0 bg-primary text-[8px] font-bold text-white px-2 py-0.5 uppercase tracking-tighter">Featured</div>
+                        <div className="absolute top-0 left-0 bg-[#6b7c4a] text-[7px] font-bold text-white px-2 py-0.5 uppercase tracking-widest">Featured</div>
+                      )}
+                      {!item.isAvailable && (
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                           <EyeOff size={20} className="text-white/80" />
+                        </div>
                       )}
                     </div>
                     
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
-                        <div className="flex justify-between items-start">
-                          <h3 className="font-serif text-lg leading-tight">{item.name}</h3>
-                          <span className="text-primary font-bold">€{item.price}</span>
+                        <div className="flex justify-between items-start gap-2">
+                          <h3 className="font-serif text-lg leading-tight text-[#1e2215]">{item.name}</h3>
+                          <span className="text-[#6b7c4a] font-bold shrink-0">€{item.price}</span>
                         </div>
-                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{item.description}</p>
+                        <p className="text-[11px] text-[#7a8060] mt-1.5 line-clamp-2 leading-relaxed">{item.description}</p>
                       </div>
 
                       <div className="flex items-center justify-between mt-4">
-                        <div className="flex items-center gap-4">
-                          <button className="text-muted-foreground hover:text-white transition-colors" title="Edit">
-                            <Edit2 size={16} />
+                        <div className="flex items-center gap-1.5">
+                          <button 
+                            onClick={() => openModal(item)}
+                            className="p-1.5 text-[#7a8060] hover:bg-[#f5ede0] hover:text-[#4a5e32] rounded-lg transition-colors" 
+                            title="Edit"
+                          >
+                            <Edit2 size={15} />
                           </button>
-                          <button className="text-muted-foreground hover:text-red-500 transition-colors" title="Delete">
-                            <Trash2 size={16} />
-                          </button>
-                          <button className="text-muted-foreground hover:text-primary transition-colors" title={item.isAvailable ? "Mark Unavailable" : "Mark Available"}>
-                            {item.isAvailable ? <Eye size={16} /> : <EyeOff size={16} />}
+                          <button 
+                            onClick={() => deleteItem(item._id)}
+                            className="p-1.5 text-[#7a8060] hover:bg-red-50 hover:text-[#c05050] rounded-lg transition-colors" 
+                            title="Delete"
+                          >
+                            <Trash2 size={15} />
                           </button>
                         </div>
-                        <span className="text-[10px] uppercase font-bold tracking-widest text-primary/60">{item.category}</span>
+                        <span className="text-[9px] uppercase font-bold tracking-widest text-[#6b7c4a]/60 bg-[#6b7c4a]/5 px-2 py-0.5 rounded-full border border-[#6b7c4a]/10">
+                          {item.category}
+                        </span>
                       </div>
                     </div>
                   </motion.div>
@@ -159,6 +261,133 @@ export default function MenuManagementPage() {
           )}
         </div>
       </div>
+
+      {/* Add/Edit Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-[#1e2215]/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+            onClick={(e) => e.target === e.currentTarget && closeModal()}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 relative border border-[#6b7c4a]/10"
+            >
+              <button onClick={closeModal} className="absolute top-6 right-6 p-2 hover:bg-[#f5ede0] rounded-full text-[#7a8060] transition-colors">
+                <X size={20} />
+              </button>
+
+              <h2 className="text-2xl font-serif text-[#4a5e32] mb-1">
+                {editingItem ? 'Edit Dish' : 'Add New Dish'}
+              </h2>
+              <p className="text-[#7a8060] text-sm mb-8">Fill in the details to update your menu.</p>
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Dish Name *</label>
+                  <input
+                    required
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    placeholder="Signature Pad Thai"
+                    className="w-full bg-[#f5ede0]/30 border border-[#6b7c4a]/10 px-4 py-3 rounded-xl focus:outline-none focus:border-[#6b7c4a] transition-all text-sm"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Description *</label>
+                  <textarea
+                    required
+                    value={form.description}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    placeholder="Brief description of the ingredients and flavors..."
+                    className="w-full bg-[#f5ede0]/30 border border-[#6b7c4a]/10 px-4 py-3 rounded-xl focus:outline-none focus:border-[#6b7c4a] transition-all text-sm min-h-[80px]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Price (€) *</label>
+                    <input
+                      required
+                      type="number"
+                      step="0.01"
+                      value={form.price}
+                      onChange={(e) => setForm({ ...form, price: e.target.value })}
+                      placeholder="18.50"
+                      className="w-full bg-[#f5ede0]/30 border border-[#6b7c4a]/10 px-4 py-3 rounded-xl focus:outline-none focus:border-[#6b7c4a] transition-all text-sm"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Category *</label>
+                    <div className="relative">
+                      <select
+                        value={form.category}
+                        onChange={(e) => setForm({ ...form, category: e.target.value })}
+                        className="w-full bg-[#f5ede0]/30 border border-[#6b7c4a]/10 px-4 py-3 rounded-xl focus:outline-none focus:border-[#6b7c4a] transition-all text-sm appearance-none"
+                      >
+                        {categories.filter(c => c !== 'ALL').map(c => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7a8060] pointer-events-none" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-6 pt-2">
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input 
+                      type="checkbox" 
+                      checked={form.isAvailable} 
+                      onChange={(e) => setForm({...form, isAvailable: e.target.checked})}
+                      className="w-4 h-4 rounded border-[#6b7c4a]/20 text-[#6b7c4a] focus:ring-[#6b7c4a]" 
+                    />
+                    <span className="text-xs font-medium text-[#7a8060] group-hover:text-[#4a5e32] transition-colors">Available</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input 
+                      type="checkbox" 
+                      checked={form.isFeatured} 
+                      onChange={(e) => setForm({...form, isFeatured: e.target.checked})}
+                      className="w-4 h-4 rounded border-[#6b7c4a]/20 text-[#6b7c4a] focus:ring-[#6b7c4a]" 
+                    />
+                    <span className="text-xs font-medium text-[#7a8060] group-hover:text-[#4a5e32] transition-colors">Featured Item</span>
+                  </label>
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="flex-1 py-3.5 border border-[#6b7c4a]/10 text-[#7a8060] hover:bg-[#f5ede0] rounded-xl text-xs font-bold uppercase tracking-widest transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 py-3.5 bg-[#6b7c4a] text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#4a5e32] transition-all flex items-center justify-center gap-2 disabled:opacity-60 shadow-lg shadow-[#6b7c4a]/20"
+                  >
+                    {isSubmitting ? (
+                      <><Loader2 size={14} className="animate-spin" /> Saving...</>
+                    ) : editingItem ? (
+                      'Save Changes'
+                    ) : (
+                      'Add Dish'
+                    )}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

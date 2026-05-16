@@ -14,6 +14,7 @@ import {
   Loader2,
   Edit2,
   ChevronDown,
+  User
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -28,9 +29,9 @@ type StaffMember = {
 };
 
 const roleColors = {
-  ADMIN: 'bg-purple-500/10 text-purple-400',
-  EMPLOYEE: 'bg-blue-500/10 text-blue-400',
-  CUSTOMER: 'bg-green-500/10 text-green-400',
+  ADMIN: 'bg-purple-500/10 text-purple-600 border-purple-500/10',
+  EMPLOYEE: 'bg-[#6b7c4a]/10 text-[#6b7c4a] border-[#6b7c4a]/10',
+  CUSTOMER: 'bg-green-500/10 text-green-600 border-green-500/10',
 };
 
 const roleIcons = {
@@ -172,21 +173,21 @@ export default function StaffPage() {
   });
 
   const inputClass =
-    'w-full bg-[#0F0F0F] border border-white/10 px-4 py-3 rounded-sm focus:outline-none focus:border-primary transition-colors text-sm';
+    'w-full bg-[#f5ede0]/30 border border-[#6b7c4a]/10 px-4 py-3 rounded-xl focus:outline-none focus:border-[#6b7c4a] transition-all text-sm shadow-sm';
 
   return (
     <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-serif">Staff Management</h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <h1 className="text-3xl font-serif text-[#4a5e32]">Staff Management</h1>
+          <p className="text-[#7a8060] text-sm mt-1">
             Manage your team — {staff.filter(s => s.role !== 'CUSTOMER').length} active members.
           </p>
         </div>
         <button
           onClick={openAddModal}
-          className="bg-primary text-white px-6 py-3 font-bold tracking-widest uppercase rounded-sm flex items-center gap-2 hover:bg-primary/90 transition-all shadow-xl self-start"
+          className="bg-[#6b7c4a] text-white px-6 py-3 font-bold tracking-widest uppercase rounded-xl flex items-center gap-2 hover:bg-[#4a5e32] transition-all shadow-lg shadow-[#6b7c4a]/20 self-start"
         >
           <Plus size={18} /> Add Staff Member
         </button>
@@ -195,13 +196,13 @@ export default function StaffPage() {
       {/* Filters */}
       <div className="flex flex-wrap gap-3">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#7a8060] w-4 h-4" />
           <input
             type="text"
             placeholder="Search by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2 bg-secondary border border-white/5 rounded-sm text-sm focus:outline-none focus:border-primary transition-colors w-64"
+            className="pl-10 pr-4 py-2.5 bg-white border border-[#6b7c4a]/10 rounded-xl text-sm focus:outline-none focus:border-[#6b7c4a] transition-all w-64 shadow-sm"
           />
         </div>
         {['ALL', 'ADMIN', 'EMPLOYEE'].map((role) => (
@@ -209,8 +210,10 @@ export default function StaffPage() {
             key={role}
             onClick={() => setRoleFilter(role)}
             className={cn(
-              'px-5 py-2 rounded-sm text-xs font-bold uppercase tracking-widest transition-all',
-              roleFilter === role ? 'bg-primary text-white' : 'bg-secondary border border-white/5 text-muted-foreground hover:bg-muted'
+              'px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-sm',
+              roleFilter === role 
+                ? 'bg-[#6b7c4a] text-white border border-transparent' 
+                : 'bg-white border border-[#6b7c4a]/10 text-[#7a8060] hover:bg-[#f5ede0]'
             )}
           >
             {role}
@@ -223,11 +226,11 @@ export default function StaffPage() {
         <AnimatePresence mode="popLayout">
           {loading
             ? [1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="animate-pulse bg-secondary h-48 border border-white/5 rounded-sm" />
+                <div key={i} className="animate-pulse bg-white h-52 rounded-2xl border border-[#6b7c4a]/10 shadow-sm" />
               ))
             : filtered.length === 0
             ? (
-                <div className="col-span-3 py-20 text-center text-muted-foreground italic">
+                <div className="col-span-full py-20 text-center text-[#7a8060] italic bg-white rounded-2xl border border-dashed border-[#6b7c4a]/20">
                   No staff members found.
                 </div>
               )
@@ -246,48 +249,50 @@ export default function StaffPage() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-secondary border border-white/5 p-6 group hover:border-primary/30 transition-all shadow-xl"
+                    className="bg-white border border-[#6b7c4a]/10 p-6 rounded-2xl group hover:border-[#6b7c4a]/30 hover:shadow-md transition-all duration-300"
                   >
                     {/* Top row */}
-                    <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-start justify-between mb-5">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl font-serif shrink-0">
+                        <div className="w-14 h-14 rounded-xl bg-[#f5ede0] flex items-center justify-center text-[#6b7c4a] font-bold text-xl font-serif shrink-0 border border-[#6b7c4a]/5 shadow-inner">
                           {initials}
                         </div>
                         <div>
-                          <h3 className="font-serif text-lg leading-tight text-white">{member.name}</h3>
-                          <p className="text-xs text-muted-foreground">{member.position || 'No position set'}</p>
+                          <h3 className="font-serif text-lg leading-tight text-[#1e2215]">{member.name}</h3>
+                          <p className="text-[11px] font-bold uppercase tracking-widest text-[#7a8060] mt-1">{member.position || 'Staff'}</p>
                         </div>
                       </div>
-                      <span className={cn('text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1', roleColors[member.role])}>
+                      <span className={cn('text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1 border shadow-sm', roleColors[member.role])}>
                         <RoleIcon size={10} />
                         {member.role}
                       </span>
                     </div>
 
                     {/* Info */}
-                    <div className="space-y-2 border-t border-white/5 pt-4 mb-4">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Mail size={13} className="text-primary shrink-0" />
-                        <span className="truncate">{member.email}</span>
-                      </div>
-                      {member.phone && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Phone size={13} className="text-primary shrink-0" />
-                          <span>{member.phone}</span>
+                    <div className="space-y-2.5 border-t border-[#6b7c4a]/5 pt-5 mb-5">
+                      <div className="flex items-center gap-3 text-sm text-[#7a8060]">
+                        <div className="w-7 h-7 rounded-lg bg-[#f5ede0]/50 flex items-center justify-center text-[#6b7c4a]">
+                           <Mail size={13} />
                         </div>
-                      )}
+                        <span className="truncate text-xs font-medium">{member.email}</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-sm text-[#7a8060]">
+                        <div className="w-7 h-7 rounded-lg bg-[#f5ede0]/50 flex items-center justify-center text-[#6b7c4a]">
+                           <Phone size={13} />
+                        </div>
+                        <span className="text-xs font-medium">{member.phone || 'No phone set'}</span>
+                      </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
-                      <p className="text-[10px] text-muted-foreground">
-                        Joined {new Date(member.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <p className="text-[10px] text-[#7a8060] font-bold uppercase tracking-widest">
+                        Since {new Date(member.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                       </p>
-                      <div className="flex gap-2">
+                      <div className="flex gap-1">
                         <button
                           onClick={() => openEditModal(member)}
-                          className="p-2 hover:bg-muted text-muted-foreground hover:text-white rounded-sm transition-colors"
+                          className="p-2 hover:bg-[#f5ede0] text-[#7a8060] hover:text-[#4a5e32] rounded-lg transition-colors"
                           title="Edit"
                         >
                           <Edit2 size={15} />
@@ -295,7 +300,7 @@ export default function StaffPage() {
                         {member.role !== 'ADMIN' && (
                           <button
                             onClick={() => handleDelete(member._id)}
-                            className="p-2 hover:bg-red-500/20 text-muted-foreground hover:text-red-500 rounded-sm transition-colors"
+                            className="p-2 hover:bg-red-50 text-[#7a8060] hover:text-[#c05050] rounded-lg transition-colors"
                             title="Remove"
                           >
                             <Trash2 size={15} />
@@ -316,30 +321,30 @@ export default function StaffPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-[#1e2215]/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
             onClick={(e) => e.target === e.currentTarget && closeModal()}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-secondary border border-white/10 shadow-2xl w-full max-w-lg p-8 relative"
+              className="bg-white rounded-3xl border border-[#6b7c4a]/10 shadow-2xl w-full max-w-lg p-8 relative"
             >
-              <button onClick={closeModal} className="absolute top-4 right-4 p-2 hover:bg-muted rounded-sm text-muted-foreground">
-                <X size={18} />
+              <button onClick={closeModal} className="absolute top-6 right-6 p-2 hover:bg-[#f5ede0] rounded-full text-[#7a8060] transition-colors">
+                <X size={20} />
               </button>
 
-              <h2 className="text-2xl font-serif mb-2">
+              <h2 className="text-2xl font-serif mb-1 text-[#4a5e32]">
                 {modalMode === 'add' ? 'Add Staff Member' : 'Edit Staff Member'}
               </h2>
-              <p className="text-muted-foreground text-sm mb-8">
+              <p className="text-[#7a8060] text-sm mb-8">
                 {modalMode === 'add' ? 'Create a new team member account.' : 'Update the staff member details.'}
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Full Name *</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Full Name *</label>
                     <input
                       required
                       value={form.name}
@@ -349,7 +354,7 @@ export default function StaffPage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Position</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Position</label>
                     <input
                       value={form.position}
                       onChange={(e) => setForm({ ...form, position: e.target.value })}
@@ -360,7 +365,7 @@ export default function StaffPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Email Address *</label>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Email Address *</label>
                   <input
                     required
                     type="email"
@@ -368,13 +373,13 @@ export default function StaffPage() {
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     placeholder="jane@heritagekitchen.be"
                     disabled={modalMode === 'edit'}
-                    className={cn(inputClass, modalMode === 'edit' && 'opacity-50 cursor-not-allowed')}
+                    className={cn(inputClass, modalMode === 'edit' && 'opacity-50 cursor-not-allowed bg-[#f5ede0]/20')}
                   />
                 </div>
 
                 {modalMode === 'add' && (
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Password *</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Password *</label>
                     <input
                       required
                       type="password"
@@ -388,7 +393,7 @@ export default function StaffPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Phone</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Phone</label>
                     <input
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -397,7 +402,7 @@ export default function StaffPage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Role *</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Role *</label>
                     <div className="relative">
                       <select
                         value={form.role}
@@ -407,33 +412,33 @@ export default function StaffPage() {
                         <option value="EMPLOYEE">Employee</option>
                         <option value="ADMIN">Admin</option>
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7a8060] pointer-events-none" />
                     </div>
                   </div>
                 </div>
 
                 {formError && (
-                  <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-sm">
+                  <div className="p-4 bg-red-50 border border-red-100 text-[#c05050] text-xs rounded-xl font-medium">
                     {formError}
                   </div>
                 )}
 
-                <div className="flex gap-3 pt-2">
+                <div className="flex gap-3 pt-4">
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="flex-1 py-3 border border-white/10 text-muted-foreground hover:bg-muted rounded-sm text-sm font-bold uppercase tracking-widest transition-all"
+                    className="flex-1 py-3.5 border border-[#6b7c4a]/10 text-[#7a8060] hover:bg-[#f5ede0] rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 py-3 bg-primary text-white rounded-sm text-sm font-bold uppercase tracking-widest hover:bg-primary/90 transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+                    className="flex-1 py-3.5 bg-[#6b7c4a] text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#4a5e32] transition-all flex items-center justify-center gap-2 disabled:opacity-60 shadow-lg shadow-[#6b7c4a]/20"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 size={16} className="animate-spin" />
+                        <Loader2 size={14} className="animate-spin" />
                         Saving...
                       </>
                     ) : modalMode === 'add' ? (
