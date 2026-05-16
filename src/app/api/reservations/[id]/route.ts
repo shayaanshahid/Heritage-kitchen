@@ -21,8 +21,16 @@ export async function PATCH(
       return NextResponse.json({ error: 'Reservation not found' }, { status: 404 });
     }
 
-    // In a real app, send approval/rejection email here
-    console.log(`Reservation ${id} updated to ${status}`);
+    // Trigger email notifications
+    const { sendReservationApprovalEmail, sendReservationRejectionEmail } = await import('@/services/email');
+    
+    if (status === 'APPROVED') {
+      await sendReservationApprovalEmail(reservation.email, reservation);
+    } else if (status === 'REJECTED') {
+      await sendReservationRejectionEmail(reservation.email, reservation);
+    }
+
+    console.log(`Reservation ${id} updated to ${status} and email notification sent to ${reservation.email}`);
 
     return NextResponse.json(reservation);
   } catch (error) {
