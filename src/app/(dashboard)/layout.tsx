@@ -29,6 +29,7 @@ export default function DashboardLayout({
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Reservations', href: '/dashboard/reservations', icon: CalendarCheck },
     { name: 'Menu Items', href: '/dashboard/menu', icon: UtensilsCrossed },
+    { name: 'Catering', href: '/dashboard/catering', icon: Bell },
     { name: 'Staff', href: '/dashboard/staff', icon: Users },
   ];
 

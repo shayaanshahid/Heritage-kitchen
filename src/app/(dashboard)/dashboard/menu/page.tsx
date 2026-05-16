@@ -12,7 +12,8 @@ import {
   Image as ImageIcon,
   Loader2,
   X,
-  ChevronDown
+  ChevronDown,
+  Link as LinkIcon
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -24,6 +25,7 @@ type MenuItem = {
   category: string;
   isAvailable: boolean;
   isFeatured: boolean;
+  image?: string;
 };
 
 const categories = ['ALL', 'STARTERS', 'MAINS', 'DESSERTS', 'BRUNCH', 'DRINKS'];
@@ -43,7 +45,8 @@ export default function MenuManagementPage() {
     price: '',
     category: 'STARTERS',
     isAvailable: true,
-    isFeatured: false
+    isFeatured: false,
+    image: ''
   });
 
   const fetchMenu = async () => {
@@ -72,7 +75,8 @@ export default function MenuManagementPage() {
         price: item.price.toString(),
         category: item.category,
         isAvailable: item.isAvailable,
-        isFeatured: item.isFeatured
+        isFeatured: item.isFeatured,
+        image: item.image || ''
       });
     } else {
       setEditingItem(null);
@@ -82,7 +86,8 @@ export default function MenuManagementPage() {
         price: '',
         category: 'STARTERS',
         isAvailable: true,
-        isFeatured: false
+        isFeatured: false,
+        image: ''
       });
     }
     setIsModalOpen(true);
@@ -211,13 +216,17 @@ export default function MenuManagementPage() {
                     exit={{ opacity: 0, scale: 0.95 }}
                     className="bg-white p-6 rounded-2xl border border-[#6b7c4a]/10 shadow-sm flex gap-5 group hover:border-[#6b7c4a]/30 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="w-24 h-24 bg-[#f5ede0]/50 rounded-xl flex items-center justify-center shrink-0 overflow-hidden relative border border-[#6b7c4a]/5">
-                      <ImageIcon className="text-[#6b7c4a]/20 w-8 h-8" />
+                    <div className="w-24 h-24 bg-[#f5ede0]/50 rounded-xl flex items-center justify-center shrink-0 overflow-hidden relative border border-[#6b7c4a]/5 shadow-inner">
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
+                      ) : (
+                        <ImageIcon className="text-[#6b7c4a]/20 w-8 h-8" />
+                      )}
                       {item.isFeatured && (
-                        <div className="absolute top-0 left-0 bg-[#6b7c4a] text-[7px] font-bold text-white px-2 py-0.5 uppercase tracking-widest">Featured</div>
+                        <div className="absolute top-0 left-0 bg-[#6b7c4a] text-[7px] font-bold text-white px-2 py-0.5 uppercase tracking-widest z-10">Featured</div>
                       )}
                       {!item.isAvailable && (
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-20">
                            <EyeOff size={20} className="text-white/80" />
                         </div>
                       )}
@@ -269,14 +278,14 @@ export default function MenuManagementPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#1e2215]/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+            className="fixed inset-0 bg-[#1e2215]/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 overflow-y-auto"
             onClick={(e) => e.target === e.currentTarget && closeModal()}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 relative border border-[#6b7c4a]/10"
+              className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 relative border border-[#6b7c4a]/10 my-8"
             >
               <button onClick={closeModal} className="absolute top-6 right-6 p-2 hover:bg-[#f5ede0] rounded-full text-[#7a8060] transition-colors">
                 <X size={20} />
@@ -285,9 +294,41 @@ export default function MenuManagementPage() {
               <h2 className="text-2xl font-serif text-[#4a5e32] mb-1">
                 {editingItem ? 'Edit Dish' : 'Add New Dish'}
               </h2>
-              <p className="text-[#7a8060] text-sm mb-8">Fill in the details to update your menu.</p>
+              <p className="text-[#7a8060] text-sm mb-6">Fill in the details to update your menu.</p>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Image Preview / Input */}
+                <div className="flex flex-col items-center gap-4 mb-2">
+                   <div className="w-32 h-32 rounded-2xl bg-[#f5ede0] border border-dashed border-[#6b7c4a]/30 flex items-center justify-center overflow-hidden relative group">
+                      {form.image ? (
+                        <>
+                          <img src={form.image} alt="Preview" className="w-full h-full object-cover" />
+                          <button 
+                            type="button" 
+                            onClick={() => setForm({...form, image: ''})}
+                            className="absolute inset-0 bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] font-bold uppercase"
+                          >
+                             Remove
+                          </button>
+                        </>
+                      ) : (
+                        <ImageIcon className="text-[#6b7c4a]/20 w-10 h-10" />
+                      )}
+                   </div>
+                   <div className="w-full space-y-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Image URL</label>
+                      <div className="relative">
+                        <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7a8060]" />
+                        <input
+                          value={form.image}
+                          onChange={(e) => setForm({ ...form, image: e.target.value })}
+                          placeholder="https://images.unsplash.com/..."
+                          className="w-full bg-[#f5ede0]/30 border border-[#6b7c4a]/10 pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:border-[#6b7c4a] transition-all text-xs"
+                        />
+                      </div>
+                   </div>
+                </div>
+
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-[#7a8060]">Dish Name *</label>
                   <input

@@ -10,6 +10,7 @@ type MenuItem = {
   description: string;
   price: number;
   category: string;
+  image?: string;
 };
 
 const categories = ['STARTERS', 'MAINS', 'DESSERTS', 'BRUNCH'];
@@ -24,7 +25,7 @@ const MenuSection = () => {
       try {
         const res = await fetch('/api/menu');
         const data = await res.json();
-        setItems(data);
+        setItems(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Failed to fetch menu:', error);
       } finally {
@@ -95,7 +96,7 @@ const MenuSection = () => {
               No items in this category yet.
             </p>
           ) : (
-            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
               <AnimatePresence mode="popLayout">
                 {filteredItems.map((item) => (
                   <motion.div
@@ -103,36 +104,31 @@ const MenuSection = () => {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 12 }}
-                    className="group relative overflow-hidden rounded-xl transition-all"
-                    style={{
-                      background: '#ffffff',
-                      border: '1px solid rgba(107,124,74,0.12)',
-                      padding: '28px 32px',
-                    }}
-                    whileHover={{
-                      y: -4,
-                      boxShadow: '0 8px 40px rgba(74,94,50,0.15)',
-                    }}
+                    className="group flex gap-6 items-start"
                   >
-                    {/* Left accent bar */}
-                    <div
-                      className="absolute top-0 left-0 w-1 transition-all duration-300 rounded-l-xl"
-                      style={{
-                        height: '0%',
-                        background: 'linear-gradient(180deg, #6b7c4a, #4a5e32)',
-                      }}
-                    />
-                    <div className="flex justify-between items-start gap-4 mb-2">
-                      <h3 className="font-serif text-lg leading-snug" style={{ color: '#4a5e32' }}>
-                        {item.name}
-                      </h3>
-                      <span className="font-semibold shrink-0 mt-0.5" style={{ color: '#6b7c4a', fontSize: '1.05rem' }}>
-                        €{item.price}
-                      </span>
+                    {item.image && (
+                      <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-2xl overflow-hidden shadow-sm border border-[#6b7c4a]/10">
+                        <img 
+                          src={item.image} 
+                          alt={item.name} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline justify-between gap-4 mb-1">
+                        <h3 className="font-serif text-lg leading-tight text-[#4a5e32] group-hover:text-[#6b7c4a] transition-colors">
+                          {item.name}
+                        </h3>
+                        <div className="flex-1 border-b border-dashed border-[#6b7c4a]/20 mx-2 mb-1" />
+                        <span className="font-semibold text-[#6b7c4a]">
+                          €{item.price}
+                        </span>
+                      </div>
+                      <p className="text-sm leading-relaxed text-[#7a8060] line-clamp-2">
+                        {item.description}
+                      </p>
                     </div>
-                    <p className="text-sm leading-relaxed" style={{ color: '#7a8060' }}>
-                      {item.description}
-                    </p>
                   </motion.div>
                 ))}
               </AnimatePresence>
